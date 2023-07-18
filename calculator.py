@@ -20,31 +20,31 @@ class CalculatorApp(App):
         self.calculator_frontend = CalculatorLayout()
 
     def btn_press(self, button):
-        prior = self.calculator_frontend.ids.calc_window.text
-        if prior == '0':
+        current = self.calculator_frontend.ids.calc_window.text
+        if current == '0':
             self.calculator_frontend.ids.calc_window.text = f'{button}'
         else:
-            self.calculator_frontend.ids.calc_window.text = f'{prior}{button}'
+            self.calculator_frontend.ids.calc_window.text = f'{current}{button}'
 
     def dot(self):
-        prior = self.calculator_frontend.ids.calc_window.text
-        nums = prior.split('+')
+        current = self.calculator_frontend.ids.calc_window.text
+        nums = current.split('+')
 
         if '.' not in nums[-1]:
-            self.calculator_frontend.ids.calc_window.text = f'{prior}.'
+            self.calculator_frontend.ids.calc_window.text = f'{current}.'
 
     def sign_chang(self):
-        if self.calculator_frontend.ids.calc_window.text == '0':
-            pass
-        else:
-            if self.calculator_frontend.ids.calc_window.text.startswith('-'):
-                self.calculator_frontend.ids.calc_window.text = self.calculator_frontend.ids.calc_window.text[1:]
+        current = self.calculator_frontend.ids.calc_window.text
+
+        if current != '0':
+            if current.startswith('-'):
+                self.calculator_frontend.ids.calc_window.text = current[1:]
             else:
-                self.calculator_frontend.ids.calc_window.text = f'-{self.calculator_frontend.ids.calc_window.text}'
+                self.calculator_frontend.ids.calc_window.text = f'-{current}'
 
     def math_sign(self, sign):
-        prior = self.calculator_frontend.ids.calc_window.text
-        self.calculator_frontend.ids.calc_window.text = f'{prior}{sign}'
+        current = self.calculator_frontend.ids.calc_window.text
+        self.calculator_frontend.ids.calc_window.text = f'{current}{sign}'
 
     def percent(self):
         pass
@@ -53,17 +53,18 @@ class CalculatorApp(App):
         self.calculator_frontend.ids.calc_window.text = '0'
 
     def clear_last(self):
-        if len(self.calculator_frontend.ids.calc_window.text) > 1:
-            self.calculator_frontend.ids.calc_window.text = self.calculator_frontend.ids.calc_window.text[:-1]
+        current = self.calculator_frontend.ids.calc_window.text
+        if len(current) > 1:
+            self.calculator_frontend.ids.calc_window.text = current[:-1]
         else:
             self.calculator_frontend.ids.calc_window.text = '0'
 
     def equals(self):
-        prior = self.calculator_frontend.ids.calc_window.text
-        if '+' in prior:
-            num_list = prior.split('+')
+        current = self.calculator_frontend.ids.calc_window.text
+        if '+' in current:
+            nums = current.split('+')
             answer = 0.0
-            for number in num_list:
+            for number in nums:
                 answer = answer + float(number)
             self.calculator_frontend.ids.calc_window.text = f'{answer}'
 
