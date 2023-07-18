@@ -27,8 +27,11 @@ class CalculatorApp(App):
             self.calculator_frontend.ids.calc_window.text = f'{prior}{button}'
 
     def dot(self):
-        if self.calculator_frontend.ids.calc_window.text[-1] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']:
-            self.calculator_frontend.ids.calc_window.text = f'{self.calculator_frontend.ids.calc_window.text}.'
+        prior = self.calculator_frontend.ids.calc_window.text
+        nums = prior.split('+')
+
+        if '.' not in nums[-1]:
+            self.calculator_frontend.ids.calc_window.text = f'{prior}.'
 
     def sign_chang(self):
         if self.calculator_frontend.ids.calc_window.text == '0':
@@ -63,7 +66,6 @@ class CalculatorApp(App):
             for number in num_list:
                 answer = answer + float(number)
             self.calculator_frontend.ids.calc_window.text = f'{answer}'
-
 
     def build(self):
         return self.calculator_frontend
