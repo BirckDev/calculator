@@ -15,25 +15,33 @@ class CalculatorLayout(Widget):
 
 class CalculatorApp(App):
 
+    math_signs = ['+', '-', 'x', '/']
+    equals_pressed = False
+
     def __init__(self):
         super().__init__()
         self.calculator_frontend = CalculatorLayout()
 
     def btn_press(self, button):
         current = self.calculator_frontend.ids.calc_window.text
-        if current == '0':
+        if current == '0' or self.equals_pressed:
             self.calculator_frontend.ids.calc_window.text = f'{button}'
         else:
             self.calculator_frontend.ids.calc_window.text = f'{current}{button}'
+        self.equals_pressed = False
 
     def dot(self):
         current = self.calculator_frontend.ids.calc_window.text
         nums = current.split('+')
 
-        if '.' not in nums[-1]:
-            self.calculator_frontend.ids.calc_window.text = f'{current}.'
+        if self.equals_pressed:
+            self.calculator_frontend.ids.calc_window.text = '.'
+            self.equals_pressed = False
+        else:
+            if '.' not in nums[-1]:
+                self.calculator_frontend.ids.calc_window.text = f'{current}.'
 
-    def sign_chang(self):
+    def sign_change(self):
         current = self.calculator_frontend.ids.calc_window.text
 
         if current != '0':
@@ -43,8 +51,16 @@ class CalculatorApp(App):
                 self.calculator_frontend.ids.calc_window.text = f'-{current}'
 
     def math_sign(self, sign):
-        current = self.calculator_frontend.ids.calc_window.text
-        self.calculator_frontend.ids.calc_window.text = f'{current}{sign}'
+        if self.calculator_frontend.ids.calc_window.text == "Error: division by zero":
+            self.calculator_frontend.ids.calc_window.text = '0'
+        else:
+            current = self.calculator_frontend.ids.calc_window.text
+            if not current.endswith('**'):
+                if current[-1] not in self.math_signs:
+                    self.calculator_frontend.ids.calc_window.text = f'{current}{sign}'
+                if sign == '*' and current[-1] == '*':
+                    self.calculator_frontend.ids.calc_window.text = f'{current}{sign}'
+            self.equals_pressed = False
 
     def percent(self):
         pass
@@ -60,13 +76,15 @@ class CalculatorApp(App):
             self.calculator_frontend.ids.calc_window.text = '0'
 
     def equals(self):
-        current = self.calculator_frontend.ids.calc_window.text
-        if '+' in current:
-            nums = current.split('+')
-            answer = 0.0
-            for number in nums:
-                answer = answer + float(number)
-            self.calculator_frontend.ids.calc_window.text = f'{answer}'
+        self.equals_pressed = True
+        try:
+            answer = str(eval(self.calculator_frontend.ids.calc_window.text))
+            if answer.endswith('.0'):
+                self.calculator_frontend.ids.calc_window.text = answer[:-2]  # remove the '.0' at the end of the result
+            else:
+                self.calculator_frontend.ids.calc_window.text = answer
+        except ZeroDivisionError:
+            self.calculator_frontend.ids.calc_window.text = "Error: division by zero"
 
     def build(self):
         return self.calculator_frontend

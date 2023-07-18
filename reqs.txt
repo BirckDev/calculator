@@ -1,0 +1,4 @@
+1. The calculator must support the 4 operations: +, -, *, /
+2. The calculator must support '**'-notation for exponentiation
+3. The calculator must handle division by zero gracefully
+4. After having pressed the equals key, pressing a number key should erase the result and enter the number instead
