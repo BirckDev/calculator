@@ -11,12 +11,7 @@ Builder.load_file('calculator.kv')
 
 class CalculatorLayout(Widget):
 
-    def btn_press(self, button):
-        prior = self.ids.calc_window.text
-        if prior == '0':
-            self.ids.calc_window.text = f'{button}'
-        else:
-            self.ids.calc_window.text = f'{prior}{button}'
+
 
     def math_sign(self, sign):
         prior = self.ids.calc_window.text
@@ -50,6 +45,13 @@ class CalculatorApp(App):
     def __init__(self):
         super().__init__()
         self.calculator_frontend = CalculatorLayout()
+
+    def btn_press(self, button):
+        prior = self.calculator_frontend.ids.calc_window.text
+        if prior == '0':
+            self.calculator_frontend.ids.calc_window.text = f'{button}'
+        else:
+            self.calculator_frontend.ids.calc_window.text = f'{prior}{button}'
 
     def clear(self):
         self.calculator_frontend.ids.calc_window.text = '0'
