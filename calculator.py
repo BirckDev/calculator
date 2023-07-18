@@ -10,16 +10,7 @@ Builder.load_file('calculator.kv')
 
 
 class CalculatorLayout(Widget):
-
-
-    def sign_chang(self):
-        if self.ids.calc_window.text == '0':
-            pass
-        else:
-            if self.ids.calc_window.text.startswith('-'):
-                self.ids.calc_window.text = self.ids.calc_window.text[1:]
-            else:
-                self.ids.calc_window.text = f'-{self.ids.calc_window.text}'
+    pass
 
 
 class CalculatorApp(App):
@@ -39,9 +30,21 @@ class CalculatorApp(App):
         if self.calculator_frontend.ids.calc_window.text[-1] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']:
             self.calculator_frontend.ids.calc_window.text = f'{self.calculator_frontend.ids.calc_window.text}.'
 
+    def sign_chang(self):
+        if self.calculator_frontend.ids.calc_window.text == '0':
+            pass
+        else:
+            if self.calculator_frontend.ids.calc_window.text.startswith('-'):
+                self.calculator_frontend.ids.calc_window.text = self.calculator_frontend.ids.calc_window.text[1:]
+            else:
+                self.calculator_frontend.ids.calc_window.text = f'-{self.calculator_frontend.ids.calc_window.text}'
+
     def math_sign(self, sign):
         prior = self.calculator_frontend.ids.calc_window.text
         self.calculator_frontend.ids.calc_window.text = f'{prior}{sign}'
+
+    def percent(self):
+        pass
 
     def clear(self):
         self.calculator_frontend.ids.calc_window.text = '0'
