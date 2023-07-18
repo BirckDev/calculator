@@ -13,9 +13,6 @@ class CalculatorLayout(Widget):
 
 
 
-    def math_sign(self, sign):
-        prior = self.ids.calc_window.text
-        self.ids.calc_window.text = f'{prior}{sign}'
 
     def equals(self):
         prior = self.ids.calc_window.text
@@ -52,6 +49,11 @@ class CalculatorApp(App):
             self.calculator_frontend.ids.calc_window.text = f'{button}'
         else:
             self.calculator_frontend.ids.calc_window.text = f'{prior}{button}'
+
+    def math_sign(self, sign):
+        prior = self.calculator_frontend.ids.calc_window.text
+        self.calculator_frontend.ids.calc_window.text = f'{prior}{sign}'
+
 
     def clear(self):
         self.calculator_frontend.ids.calc_window.text = '0'
